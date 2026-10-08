@@ -21,7 +21,10 @@ const emit = defineEmits<{
 }>()
 
 const matchesStore = useMatchesStore()
-const { t } = useI18n()
+const { t, locale } = useI18n()
+
+/** Intl locale for dates/times, following the selected UI language */
+const intlLocale = computed(() => (locale.value === 'sr' ? 'sr-Latn-RS' : 'en-GB'))
 
 /**
  * Format the match start time
@@ -33,7 +36,7 @@ const formattedTime = computed(() => {
     if (isNaN(date.getTime())) {
       return props.match.startTime
     }
-    return date.toLocaleTimeString('sr-RS', { 
+    return date.toLocaleTimeString(intlLocale.value, { 
       hour: '2-digit', 
       minute: '2-digit' 
     })
@@ -52,7 +55,7 @@ const formattedDate = computed(() => {
     if (isNaN(date.getTime())) {
       return ''
     }
-    return date.toLocaleDateString('sr-RS', {
+    return date.toLocaleDateString(intlLocale.value, {
       day: 'numeric',
       month: 'short'
     })
