@@ -1,6 +1,8 @@
-# ⚽ Mozzart Live Sports Matches Dashboard
+# ⚽ Live Sports Matches Dashboard
 
-A real-time sports matches dashboard with dynamic updates, animations, and advanced filtering capabilities. Built as a technical assignment demonstrating production-ready code quality and best practices.
+A real-time sports matches dashboard with dynamic updates, animations, and advanced filtering capabilities. Originally built as a technical assignment, focused on production-ready code quality, performance and resilience.
+
+**▶ Live demo: [darkokovach.github.io/live-matches-dashboard](https://darkokovach.github.io/live-matches-dashboard/)** — runs on a built-in simulated feed (live minutes advance, goals are scored, matches kick off, finish and drop out), so the polling, animations and filters can be seen without the original API.
 
 ![Vue 3](https://img.shields.io/badge/Vue-3.5-42b883?logo=vue.js)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6?logo=typescript)
@@ -118,8 +120,8 @@ src/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/DarkoKovach/mozzart-web-app.git
-cd mozzart-web-app
+git clone https://github.com/DarkoKovach/live-matches-dashboard.git
+cd live-matches-dashboard
 ```
 
 2. **Install dependencies**
@@ -132,7 +134,12 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` and add your email for the API username header:
+To run against the simulated feed (no API needed):
+```env
+VITE_USE_MOCK_DATA=true
+```
+
+Or, to use the real API, add your email for the API username header:
 ```env
 VITE_API_USERNAME=your-email@example.com
 ```
@@ -450,10 +457,14 @@ window.analytics.clearEventQueue()
 ## �📝 Additional Notes
 
 ### API Configuration
-- **Endpoint**: `http://172.235.235.11/api/matches`
+- **Endpoint**: configured via `VITE_API_BASE_URL` + `VITE_API_MATCHES_ENDPOINT`
 - **Required Header**: `username: <your-email>`
 - **Polling**: Every 10 seconds
 - **Retry**: Up to 5 attempts with exponential backoff
+- **Demo mode**: `VITE_USE_MOCK_DATA=true` swaps the network call for `src/utils/mockMatches.ts`, a stateful simulator behind the same `fetchMatches()` contract, so the store, polling and race-condition handling run unchanged
+
+### Deployment
+Every push to `main` builds the app in demo mode and publishes it to GitHub Pages (`.github/workflows/deploy.yml`), after type-checking and the unit test suite pass.
 
 ### Browser Support
 - Chrome/Edge 90+
@@ -470,6 +481,6 @@ window.analytics.clearEventQueue()
 
 ---
 
-**Built with ❤️ for Mozzart** | [Technical Assignment] | by Darko Kovac
+Built by [Darko Kovač](https://github.com/DarkoKovach)
 
 

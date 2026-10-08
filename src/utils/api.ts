@@ -5,7 +5,9 @@ import {
   MAX_RETRY_ATTEMPTS,
   INITIAL_RETRY_DELAY,
   MAX_RETRY_DELAY,
+  USE_MOCK_DATA,
 } from './constants'
+import { fetchMockMatches } from './mockMatches'
 import type { Match, MatchesApiResponse } from '@/types/match'
 
 /**
@@ -99,7 +101,9 @@ export async function fetchMatches(): Promise<{ matches: Match[]; requestId: num
 
   try {
     const url = `${API_BASE_URL}${API_ENDPOINTS.MATCHES}`
-    const response = await fetchWithRetry<MatchesApiResponse | Match[]>(url)
+    const response = USE_MOCK_DATA
+      ? await fetchMockMatches()
+      : await fetchWithRetry<MatchesApiResponse | Match[]>(url)
 
     // Handle both response formats: {matches: [...]} or [...]
     let matches: Match[] = []
